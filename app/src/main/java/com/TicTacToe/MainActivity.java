@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         btn8 = findViewById(R.id.img_main_btn8);
         btn9 = findViewById(R.id.img_main_btn9);
 
+
         //TextViews
         txtScoreX = findViewById(R.id.txt_main_scoreX);
         txtScoreO = findViewById(R.id.txt_main_scoreO);
