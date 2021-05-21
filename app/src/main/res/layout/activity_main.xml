@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:textAlignment="center"
-        android:text="Score X:-"
+        android:text="Score X: 0"
         android:textSize="26sp"
         />
     <TextView
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:textAlignment="center"
-        android:text="Score O:-"
+        android:text="Score O: 0"
         android:textSize="25sp"
         />
     </LinearLayout>
