@@ -18,11 +18,12 @@ public class MainActivity extends AppCompatActivity {
     private byte mBtn1 = 5, mBtn2= 5, mBtn3 = 5, mBtn4 = 5,mBtn5 = 5, mBtn6 = 5,mBtn7 = 5, mBtn8= 5,mBtn9 = 5, i = 0, countX = 0, countO = 0;
     private short draw = 0;
     private char mStartGame = 'X';
+    private boolean isRoundFinished = false; //to avoid two game results in single round
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mMapResource();
+        mInitializeResources();
 
         btnResetGame.setOnClickListener(v->{
             mResetGame();
@@ -165,11 +166,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void mWinningGame() {
+        if(isRoundFinished){ //to avoid two game results in single round
+            return;
+        }
         if((mBtn1==1 && mBtn2 == 1 && mBtn3==1) || (mBtn4==1 && mBtn5==1 && mBtn6 == 1) || (mBtn7==1 && mBtn8==1 && mBtn9 == 1)
                 || (mBtn1==1 && mBtn4==1 && mBtn7 == 1) || (mBtn2==1 && mBtn5==1 && mBtn8 == 1)  || (mBtn3==1 && mBtn6==1 && mBtn9 == 1)
                 || (mBtn1==1 && mBtn5==1 && mBtn9 == 1) || (mBtn3==1 && mBtn5==1 && mBtn7 == 1)){
-
-            mBtn1 = 5; mBtn2 = 5; mBtn3 = 5; mBtn4 = 5; mBtn5 = 5; mBtn6 = 5; mBtn7 = 5; mBtn8 = 5; mBtn9 = 5;
+            isRoundFinished = true;
             countX++;
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
             adb.setTitle("Game Result!");
@@ -193,11 +196,12 @@ public class MainActivity extends AppCompatActivity {
             ad.show();
             txtScoreX.setText("Score X: "+countX);
         }
+
         else if((mBtn1==0 && mBtn2 == 0 && mBtn3==1) || (mBtn4==0 && mBtn5==0 && mBtn6 == 0) || (mBtn7==0 && mBtn8==0 && mBtn9 == 0)
                 || (mBtn1==0 && mBtn4==0 && mBtn7 == 0) || (mBtn2==0 && mBtn5==0 && mBtn8 == 0)  || (mBtn3==0 && mBtn6==0 && mBtn9 == 0)
                 || (mBtn1==0 && mBtn5==0 && mBtn9 == 0) || (mBtn3==0 && mBtn5==0 && mBtn7 == 0)){
-
-            mBtn1 = 5; mBtn2 = 5; mBtn3 = 5; mBtn4 = 5; mBtn5 = 5; mBtn6 = 5; mBtn7 = 5; mBtn8 = 5; mBtn9 = 5;
+            //Player O wins the game
+            isRoundFinished = true;
             countO++;
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
             adb.setTitle("Game Result!");
@@ -221,7 +225,9 @@ public class MainActivity extends AppCompatActivity {
             txtScoreO.setText("Score O: "+countO);
         }
         else if(i>=9){
+            //No one wins
             draw++;
+            isRoundFinished = true;
             txtDraw.setText("Draw: " +draw);
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
             adb.setTitle("Game Result!");
@@ -257,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void mMapResource(){
+    private void mInitializeResources(){
         //ImageViews
         btn1 = findViewById(R.id.img_main_btn1);
         btn2 = findViewById(R.id.img_main_btn2);
@@ -280,6 +286,8 @@ public class MainActivity extends AppCompatActivity {
 
     //Reset Game
     private void mResetGame(){
+        isRoundFinished = false;
+
         btn1.setImageDrawable(null);
         btn2.setImageDrawable(null);
         btn3.setImageDrawable(null);
@@ -314,6 +322,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void mReadyForNextRound(){
+        isRoundFinished = false;
+
         btn1.setImageDrawable(null);
         btn2.setImageDrawable(null);
         btn3.setImageDrawable(null);
