@@ -18,11 +18,13 @@ public class MainActivity extends AppCompatActivity {
     private byte mBtn1 = 5, mBtn2= 5, mBtn3 = 5, mBtn4 = 5,mBtn5 = 5, mBtn6 = 5,mBtn7 = 5, mBtn8= 5,mBtn9 = 5, i = 0, countX = 0, countO = 0;
     private short draw = 0;
     private char mStartGame = 'X';
+    private boolean isRoundFinished = false; //to avoid two game results in single round
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mMapResource();
+        mInitializeResources();
 
         btnResetGame.setOnClickListener(v->{
             mResetGame();
@@ -32,10 +34,10 @@ public class MainActivity extends AppCompatActivity {
             if(mBtn1!=1 && mBtn1 != 0) {
                 if (mStartGame == 'X') {
                     btn1.setImageResource(R.drawable.cross);
-                    mBtn1 = 1; //this button taken by player X
+                    mBtn1 = 1; //this spot taken by player X
                 } else {
                     btn1.setImageResource(R.drawable.circle);
-                    mBtn1 = 0; //this button taken by player O
+                    mBtn1 = 0; //this spot taken by player O
                 }
                 i++;
                 mChoosePlayer();
@@ -47,10 +49,10 @@ public class MainActivity extends AppCompatActivity {
             if(mBtn2!=1 && mBtn2 != 0) {
                 if (mStartGame == 'X') {
                     btn2.setImageResource(R.drawable.cross);
-                    mBtn2 = 1; //this button taken by player X
+                    mBtn2 = 1; //this spot taken by player X
                 } else {
                     btn2.setImageResource(R.drawable.circle);
-                    mBtn2 = 0; //this button taken by player O
+                    mBtn2 = 0; //this spot taken by player O
                 }
                 i++;
                 mChoosePlayer();
@@ -62,10 +64,10 @@ public class MainActivity extends AppCompatActivity {
             if(mBtn3 != 1 && mBtn3 != 0) {
                 if (mStartGame == 'X') {
                     btn3.setImageResource(R.drawable.cross);
-                    mBtn3 = 1; //this button taken by player X
+                    mBtn3 = 1; //this spot taken by player X
                 } else {
                     btn3.setImageResource(R.drawable.circle);
-                    mBtn3 = 0; //this button taken by player O
+                    mBtn3 = 0; //this spot taken by player O
                 }
                 i++;
                 mChoosePlayer();
@@ -77,10 +79,10 @@ public class MainActivity extends AppCompatActivity {
             if(mBtn4 != 1 && mBtn4 != 0) {
                 if (mStartGame == 'X') {
                     btn4.setImageResource(R.drawable.cross);
-                    mBtn4 = 1; //this button taken by player X
+                    mBtn4 = 1; //this spot taken by player X
                 } else {
                     btn4.setImageResource(R.drawable.circle);
-                    mBtn4 = 0; //this button taken by player O
+                    mBtn4 = 0; //this spot taken by player O
                 }
                 i++;
                 mChoosePlayer();
@@ -92,10 +94,10 @@ public class MainActivity extends AppCompatActivity {
             if(mBtn5!=1 && mBtn5 != 0) {
                 if (mStartGame == 'X') {
                     btn5.setImageResource(R.drawable.cross);
-                    mBtn5 = 1; //this button taken by player X
+                    mBtn5 = 1; //this spot taken by player X
                 } else {
                     btn5.setImageResource(R.drawable.circle);
-                    mBtn5 = 0; //this button taken by player O
+                    mBtn5 = 0; //this spot taken by player O
                 }
                 i++;
                 mChoosePlayer();
@@ -107,10 +109,10 @@ public class MainActivity extends AppCompatActivity {
             if(mBtn6!=1 && mBtn6 != 0) {
                 if (mStartGame == 'X') {
                     btn6.setImageResource(R.drawable.cross);
-                    mBtn6 = 1; //this button taken by player X
+                    mBtn6 = 1; //this spot taken by player X
                 } else {
                     btn6.setImageResource(R.drawable.circle);
-                    mBtn6 = 0; //this button taken by player O
+                    mBtn6 = 0; //this spot taken by player O
                 }
                 i++;
                 mChoosePlayer();
@@ -122,10 +124,10 @@ public class MainActivity extends AppCompatActivity {
             if(mBtn7!=1 && mBtn7 != 0) {
                 if (mStartGame == 'X') {
                     btn7.setImageResource(R.drawable.cross);
-                    mBtn7 = 1; //this button taken by player X
+                    mBtn7 = 1; //this spot taken by player X
                 } else {
                     btn7.setImageResource(R.drawable.circle);
-                    mBtn7 = 0; //this button taken by player O
+                    mBtn7 = 0; //this spot taken by player O
                 }
                 i++;
                 mChoosePlayer();
@@ -137,10 +139,10 @@ public class MainActivity extends AppCompatActivity {
             if(mBtn8!=1 && mBtn8 != 0) {
                 if (mStartGame == 'X') {
                     btn8.setImageResource(R.drawable.cross);
-                    mBtn8 = 1; //this button taken by player X
+                    mBtn8 = 1; //this spot taken by player X
                 } else {
                     btn8.setImageResource(R.drawable.circle);
-                    mBtn8 = 0; //this button taken by player O
+                    mBtn8 = 0; //this spot taken by player O
                 }
                 i++;
                 mChoosePlayer();
@@ -152,10 +154,10 @@ public class MainActivity extends AppCompatActivity {
             if(mBtn9 !=1 && mBtn9 != 0) {
                 if (mStartGame == 'X') {
                     btn9.setImageResource(R.drawable.cross);
-                    mBtn9 = 1; //this button taken by player X
+                    mBtn9 = 1; //this spot taken by player X
                 } else {
                     btn9.setImageResource(R.drawable.circle);
-                    mBtn9 = 0; //this button taken by player O
+                    mBtn9 = 0; //this spot taken by player O
                 }
                 i++;
                 mChoosePlayer();
@@ -165,11 +167,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void mWinningGame() {
+        if(isRoundFinished){ //to avoid two game results in single round
+            return;
+        }
+		
         if((mBtn1==1 && mBtn2 == 1 && mBtn3==1) || (mBtn4==1 && mBtn5==1 && mBtn6 == 1) || (mBtn7==1 && mBtn8==1 && mBtn9 == 1)
                 || (mBtn1==1 && mBtn4==1 && mBtn7 == 1) || (mBtn2==1 && mBtn5==1 && mBtn8 == 1)  || (mBtn3==1 && mBtn6==1 && mBtn9 == 1)
                 || (mBtn1==1 && mBtn5==1 && mBtn9 == 1) || (mBtn3==1 && mBtn5==1 && mBtn7 == 1)){
-
-            mBtn1 = 5; mBtn2 = 5; mBtn3 = 5; mBtn4 = 5; mBtn5 = 5; mBtn6 = 5; mBtn7 = 5; mBtn8 = 5; mBtn9 = 5;
+            isRoundFinished = true;
             countX++;
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
             adb.setTitle("Game Result!");
@@ -193,11 +198,12 @@ public class MainActivity extends AppCompatActivity {
             ad.show();
             txtScoreX.setText("Score X: "+countX);
         }
+
         else if((mBtn1==0 && mBtn2 == 0 && mBtn3==1) || (mBtn4==0 && mBtn5==0 && mBtn6 == 0) || (mBtn7==0 && mBtn8==0 && mBtn9 == 0)
                 || (mBtn1==0 && mBtn4==0 && mBtn7 == 0) || (mBtn2==0 && mBtn5==0 && mBtn8 == 0)  || (mBtn3==0 && mBtn6==0 && mBtn9 == 0)
                 || (mBtn1==0 && mBtn5==0 && mBtn9 == 0) || (mBtn3==0 && mBtn5==0 && mBtn7 == 0)){
-
-            mBtn1 = 5; mBtn2 = 5; mBtn3 = 5; mBtn4 = 5; mBtn5 = 5; mBtn6 = 5; mBtn7 = 5; mBtn8 = 5; mBtn9 = 5;
+            //Player O wins the game
+            isRoundFinished = true;
             countO++;
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
             adb.setTitle("Game Result!");
@@ -221,11 +227,13 @@ public class MainActivity extends AppCompatActivity {
             txtScoreO.setText("Score O: "+countO);
         }
         else if(i>=9){
+            //No one wins
             draw++;
+            isRoundFinished = true;
             txtDraw.setText("Draw: " +draw);
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
             adb.setTitle("Game Result!");
-            //adb.setCancelable(false);
+            adb.setCancelable(false);
             adb.setMessage("Draw no one wins!");
 
             adb.setPositiveButton("Next round", new DialogInterface.OnClickListener() {
@@ -247,7 +255,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void mChoosePlayer() {
         mStartGame = (mStartGame=='X') ? 'O' : 'X';
-
         /*if(mStartGame=='X'){
             mStartGame = 'O';
         }
@@ -257,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void mMapResource(){
+    private void mInitializeResources(){
         //ImageViews
         btn1 = findViewById(R.id.img_main_btn1);
         btn2 = findViewById(R.id.img_main_btn2);
@@ -278,8 +285,9 @@ public class MainActivity extends AppCompatActivity {
         btnResetGame = findViewById(R.id.btn_main_reset);
     }
 
-    //Reset Game
     private void mResetGame(){
+        isRoundFinished = false;
+
         btn1.setImageDrawable(null);
         btn2.setImageDrawable(null);
         btn3.setImageDrawable(null);
@@ -314,6 +322,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void mReadyForNextRound(){
+        isRoundFinished = false;
+
         btn1.setImageDrawable(null);
         btn2.setImageDrawable(null);
         btn3.setImageDrawable(null);
