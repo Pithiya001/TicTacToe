@@ -1,5 +1,4 @@
 # TicTacToe
-A simple game for android devices
 <img src="Screenshots/Main.png" height="700">
 <img src="Screenshots/GameResultXWins.png" height="700">
 <img src="Screenshots/GameResultOWins.png" height="700">
